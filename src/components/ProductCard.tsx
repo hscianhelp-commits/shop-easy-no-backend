@@ -4,7 +4,7 @@ import { Product, CartItem } from '@/types';
 import { useApp } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
   product: Product;
@@ -18,22 +18,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   cartItem 
 }) => {
   const { addToCart, addToWishlist, removeFromWishlist, isInWishlist, updateQuantity, removeFromCart } = useApp();
+  const navigate = useNavigate();
   
   const inWishlist = isInWishlist(product.id);
   
   const handleBuyNow = () => {
     const quantity = cartItem?.quantity || 1;
-    const googleFormUrl = 'https://forms.gle/puEhZYTWGgTvKEa68';
-    const formData = `Product: ${product.name}\nQuantity: ${quantity}\nPrice: ৳${product.price}\nProduct ID: ${product.id}`;
-    
-    // Copy details to clipboard
-    navigator.clipboard.writeText(formData).catch(() => {
-      // Fallback for browsers that don't support clipboard API
-      console.log('Could not copy to clipboard');
-    });
-    
-    // Open Google Form with product details
-    window.open(`${googleFormUrl}?entry.1000000=${encodeURIComponent(formData)}`, '_blank');
+    navigate(`/order?name=${encodeURIComponent(product.name)}&id=${product.id}&quantity=${quantity}&price=${product.price}`);
   };
   
   const handleWishlistToggle = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { TopNavigation, BottomNavigation } from '@/components/Navigation';
 import { ProductCard } from '@/components/ProductCard';
 import { useApp } from '@/context/AppContext';
@@ -11,6 +11,7 @@ import { Heart, ShoppingCart } from 'lucide-react';
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { addToCart, addToWishlist, removeFromWishlist, isInWishlist } = useApp();
   
   const product = products.find(p => p.id === id);
@@ -26,9 +27,7 @@ const ProductDetails: React.FC = () => {
   const inWishlist = isInWishlist(product.id);
 
   const handleBuyNow = () => {
-    const googleFormUrl = 'https://forms.gle/puEhZYTWGgTvKEa68';
-    const formData = `Product: ${product.name}\nQuantity: 1\nPrice: ৳${product.price}\nProduct ID: ${product.id}`;
-    window.open(`${googleFormUrl}?entry.1000000=${encodeURIComponent(formData)}`, '_blank');
+    navigate(`/order?name=${encodeURIComponent(product.name)}&id=${product.id}&quantity=1&price=${product.price}`);
   };
 
   const handleWishlistToggle = () => {

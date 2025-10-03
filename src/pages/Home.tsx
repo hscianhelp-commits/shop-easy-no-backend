@@ -22,16 +22,30 @@ const Home: React.FC = () => {
       <TopNavigation showSearch={false} />
       
       <main className="pb-20 md:pb-8">
-        {/* Banner Carousel */}
-        <BannerCarousel />
+        {/* Desktop: Banner Left, Categories Right | Mobile: Stacked */}
+        <div className="md:grid md:grid-cols-2 md:gap-6 md:container md:mx-auto md:px-4 md:py-6">
+          {/* Banner Section */}
+          <div className="md:order-1">
+            <BannerCarousel />
+            
+            {/* Search Box - stays below banner */}
+            <div className="px-4 py-4 md:px-0">
+              <HomeSearchBox />
+            </div>
+          </div>
 
-        {/* Search Box */}
-        <section className="container mx-auto px-4 py-4">
-          <HomeSearchBox />
-        </section>
+          {/* Categories Section - Desktop Only on Right */}
+          <div className="hidden md:block md:order-2">
+            <CategoryScroll
+              categories={categories}
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+            />
+          </div>
+        </div>
 
-        {/* Categories */}
-        <section className="py-2">
+        {/* Mobile Categories - Full Width */}
+        <section className="py-2 md:hidden">
           <CategoryScroll
             categories={categories}
             selectedCategory={selectedCategory}
