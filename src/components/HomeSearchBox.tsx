@@ -17,8 +17,8 @@ export const HomeSearchBox: React.FC = () => {
 
   return (
     <div className="relative">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-primary" />
+      <div className="relative group">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#166534] group-hover:scale-110 transition-transform" />
         <Input
           type="text"
           placeholder="Search products..."
@@ -29,7 +29,7 @@ export const HomeSearchBox: React.FC = () => {
           }}
           onFocus={() => setShowResults(true)}
           onBlur={() => setTimeout(() => setShowResults(false), 200)}
-          className="pl-10 h-12 border-2 border-primary focus-visible:ring-primary shadow-sm hover:shadow-md transition-shadow"
+          className="pl-10 h-12 border-2 border-[#166534] focus-visible:ring-[#166534] focus-visible:ring-2 focus-visible:border-[#166534] shadow-md hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm rounded-lg"
         />
       </div>
 

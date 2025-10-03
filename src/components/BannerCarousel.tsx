@@ -23,12 +23,12 @@ export const BannerCarousel: React.FC = () => {
 
   return (
     <section className="w-full overflow-hidden">
-      <div className="relative w-full h-40 md:h-64">
+      <div className="relative w-full h-40 md:h-64 rounded-lg overflow-hidden shadow-lg">
         {banners.map((banner, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-500 ${
-              index === currentBanner ? 'opacity-100' : 'opacity-0'
+            className={`absolute inset-0 transition-all duration-700 ${
+              index === currentBanner ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
             }`}
           >
             <img
@@ -36,8 +36,23 @@ export const BannerCarousel: React.FC = () => {
               alt={`Banner ${index + 1}`}
               className="w-full h-full object-cover"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
           </div>
         ))}
+        
+        {/* Indicator dots */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {banners.map((_, index) => (
+            <div
+              key={index}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                index === currentBanner 
+                  ? 'w-6 bg-white shadow-lg' 
+                  : 'w-1.5 bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
