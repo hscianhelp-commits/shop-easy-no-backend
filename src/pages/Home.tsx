@@ -9,13 +9,27 @@ import { products, categories } from '@/data/products';
 
 const Home: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredProducts = useMemo(() => {
-    if (selectedCategory === 'All') {
-      return products;
+    let filtered = products;
+    
+    // Filter by category
+    if (selectedCategory !== 'All') {
+      filtered = filtered.filter(product => product.category === selectedCategory);
     }
-    return products.filter(product => product.category === selectedCategory);
-  }, [selectedCategory]);
+    
+    // Filter by search query
+    if (searchQuery.trim()) {
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    return filtered;
+  }, [selectedCategory, searchQuery]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -30,7 +44,7 @@ const Home: React.FC = () => {
             
             {/* Search Box - stays below banner */}
             <div className="px-4 py-3 md:px-0 md:pt-3">
-              <HomeSearchBox />
+              <HomeSearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             </div>
           </div>
 

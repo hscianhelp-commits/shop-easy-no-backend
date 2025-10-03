@@ -1,53 +1,36 @@
-import React, { useState } from 'react';
-import { Search } from 'lucide-react';
+import React from 'react';
+import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { ProductCard } from '@/components/ProductCard';
-import { products } from '@/data/products';
+import { Button } from '@/components/ui/button';
 
-export const HomeSearchBox: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showResults, setShowResults] = useState(false);
+interface HomeSearchBoxProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
 
-  const filteredProducts = searchQuery.trim()
-    ? products.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
-
+export const HomeSearchBox: React.FC<HomeSearchBoxProps> = ({ searchQuery, setSearchQuery }) => {
   return (
     <div className="relative">
       <div className="relative group">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#166534] group-hover:scale-110 transition-transform" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#166534] group-hover:scale-110 group-hover:rotate-12 transition-all duration-300" />
         <Input
           type="text"
           placeholder="Search products..."
           value={searchQuery}
-          onChange={(e) => {
-            setSearchQuery(e.target.value);
-            setShowResults(true);
-          }}
-          onFocus={() => setShowResults(true)}
-          onBlur={() => setTimeout(() => setShowResults(false), 200)}
-          className="pl-10 h-12 border-2 border-[#166534] focus-visible:ring-[#166534] focus-visible:ring-2 focus-visible:border-[#166534] shadow-md hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm rounded-lg"
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10 pr-10 h-12 border-2 border-[#166534] focus-visible:ring-[#166534] focus-visible:ring-2 focus-visible:border-[#166534] shadow-md hover:shadow-lg focus-visible:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm rounded-lg animate-fade-in"
         />
+        {searchQuery && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSearchQuery('')}
+            className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-[#166534]/10 animate-scale-in"
+          >
+            <X className="h-4 w-4 text-[#166534]" />
+          </Button>
+        )}
       </div>
-
-      {showResults && searchQuery.trim() && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-background border rounded-lg shadow-lg max-h-96 overflow-y-auto z-50">
-          {filteredProducts.length > 0 ? (
-            <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-              {filteredProducts.slice(0, 6).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div className="p-4 text-center text-muted-foreground">
-              No products found
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 };
